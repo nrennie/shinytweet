@@ -3,48 +3,17 @@ name: Update data
 on:
   schedule:
     - cron: "0 8 * * *"
-    
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  updateData:
+  # This workflow contains a single job called "build"
+  updatedata:
+    # The type of runner that the job will run on
     runs-on: Ubuntu-20.04
-    strategy:
-      matrix:
-        r-version: [4.2.1] 
 
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Check out code
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      
-      - name: Set up R ${{ matrix.r-version }}
-        uses: r-lib/actions/setup-R@v1
-        with:
-          r-version: ${{ matrix.r-version }}
-
-      - name: Setting up pandoc for Rmd docs
-        uses: r-lib/actions/setup-pandoc@v1
-
-       - name: Install dependencies
-        run: |
-          install.packages(c("rtweet", "dplyr", "tibble",
-          "stringr", "lubridate"))
-        shell: Rscript {0}
-
-      - name: Update data
-        run: |
-          source("update_data.R")
-        shell: Rscript {0} 
-        
-      - name: Commit files
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git add --all
-          git commit -am "add data"
-          git push 
-          
-      - name: Session info
-        run: |
-          options(width = 100)
-          pkgs <- installed.packages()[, "Package"]
-          sessioninfo::session_info(pkgs, include_base = TRUE)
-        shell: Rscript {0}
