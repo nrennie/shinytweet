@@ -1,3 +1,8 @@
+library(rtweet)
+library(dplyr)
+library(tibble)
+library(stringr)
+
 # function to grab new data
 new_data <- function(since_id, n = Inf) {
   username <- "nrennie35"
@@ -21,12 +26,17 @@ new_data <- function(since_id, n = Inf) {
   return(likes)
 }
 
+# authenticate
+rtweet_app(bearer_token = Sys.getenv("BEARER", unset=NA))
+
 # function to update data set
 update_data <- function(since_id) {
   new_data_df <- new_data(since_id = since_id)
   likes <- rbind(new_data_df, likes)
+  likes <- distinct(likes)
   write_rds(likes, 'likes.rds')
 }
 
+# run update
 likes <- readRDS('likes.rds')
 update_data(since_id = likes$id_str[1])
