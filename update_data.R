@@ -2,6 +2,7 @@ library(rtweet)
 library(dplyr)
 library(tibble)
 library(stringr)
+library(readr)
 
 # function to grab new data
 new_data <- function(since_id, n = Inf) {
@@ -35,7 +36,7 @@ update_data <- function(since_id) {
   new_data_df <- new_data(since_id = since_id)
   likes <- rbind(new_data_df, likes)
   likes <- distinct(likes)
-  write_rds(likes, 'likes.rds')
+  readr::write_rds(likes, 'likes.rds')
 }
 
 # run update
