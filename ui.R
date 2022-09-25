@@ -16,7 +16,7 @@ ui <- ui <- navbarPage(
   
   position = "static-top",
   
-  tabPanel("My Favourite Tweets",
+  tabPanel("Favourite Tweets",
       reactable::reactableOutput("table_output")
   )
       
