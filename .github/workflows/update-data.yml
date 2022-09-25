@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "0 8 * * *"
     
 jobs:
   generate-data:
@@ -29,27 +29,13 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@master
 
-      - name: Query dependencies
+       - name: Install dependencies
         run: |
-          install.packages('remotes')
-          install.packages('sessioninfo')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
-          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
+          install.packages(c("rtweet", "dplyr", "tibble",
+          "stringr", "lubridate"))
         shell: Rscript {0}
 
-      - name: Cache R packages
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
-
-      - name: Install dependencies
-        run: |
-          remotes::install_deps(dependencies = TRUE)
-        shell: Rscript {0}
-        
-      - name: Generate data
+      - name: Update data
         run: |
           source("update_data.R")
         shell: Rscript {0} 
