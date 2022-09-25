@@ -5,14 +5,14 @@ library(stringr)
 library(readr)
 
 # function to grab new data
-new_data <- function(since_id, n = Inf) {
+new_data <- function(n = 30) {
   username <- "nrennie35"
   words_to_keep <- c("rstats", " r ", "rstudio", "tidyverse", 
                      "python", "shiny", "ggplot2", 
                      "tableau", "rladies", "dataviz", "vizualisation", 
                      "visualisation")
   url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
-  likes <- get_favorites(username, since_id = since_id, n = n, parse = FALSE) 
+  likes <- get_favorites(username, n = n, parse = FALSE) 
   likes <- likes[[1]][[1]][c("created_at", "full_text", "user", "id_str")]
   likes$user <- likes$user$screen_name
   likes <- as_tibble(likes)
@@ -40,5 +40,4 @@ update_data <- function(since_id) {
 }
 
 # run update
-likes <- readRDS('likes.rds')
-update_data(since_id = likes$id_str[1])
+update_data()
