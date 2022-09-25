@@ -5,13 +5,14 @@ on:
     - cron: "0 8 * * *"
     
 jobs:
-  ShinyDoc-Update:
+  updateData:
     runs-on: Ubuntu-20.04
     strategy:
       matrix:
         r-version: [4.2.1] 
 
     steps:
+      - name: Check out code
       - uses: actions/checkout@v2
       
       - name: Set up R ${{ matrix.r-version }}
