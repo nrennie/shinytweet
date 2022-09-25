@@ -28,4 +28,10 @@ jobs:
 
       - name: Setting up pandoc for Rmd docs
         uses: r-lib/actions/setup-pandoc@v1
+        
+      - name: Install dependencies
+        run: |
+          install.packages(c("rtweet", "dplyr", "tibble",
+          "stringr", "lubridate"))
+        shell: Rscript {0}
       
