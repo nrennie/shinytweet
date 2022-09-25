@@ -27,7 +27,8 @@ new_data <- function(since_id, n = Inf) {
 }
 
 # authenticate
-rtweet_app(bearer_token = Sys.getenv("BEARER", unset=NA))
+my_app <- rtweet_app(bearer_token = Sys.getenv("BEARER", unset=NA))
+auth_as(my_app)
 
 # function to update data set
 update_data <- function(since_id) {
