@@ -22,9 +22,10 @@ server <- function(input, output) {
                            User = colDef(cell = function(User) {
                              htmltools::tags$a(href = paste0("https://twitter.com/", as.character(User)),
                                                target = "_blank", paste0("@",User))
-                           }),
+                           }, 
+                           minWidth = 60),
                            Tweet = colDef(align = "left",
-                                         minWidth = 100),
+                                         minWidth = 120),
                            URL = colDef(cell = function(URL) {
                              htmltools::tags$a(href = as.character(URL),
                                                target = "_blank", as.character(URL))

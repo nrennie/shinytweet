@@ -24,9 +24,9 @@ new_data <- function(since_id, n = Inf) {
 # function to update data set
 update_data <- function(since_id) {
   new_data_df <- new_data(since_id = since_id)
-  likes <- rbind(likes, new_data_df)
+  likes <- rbind(new_data_df, likes)
   write_rds(likes, 'likes.rds')
 }
 
 likes <- readRDS('likes.rds')
-update_data(since_id = likes$created_at[1])
+update_data(since_id = likes$id_str[1])
