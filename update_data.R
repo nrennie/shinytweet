@@ -33,7 +33,7 @@ auth_as(my_app)
 
 # function to update data set
 update_data <- function(since_id) {
-  new_data_df <- new_data(since_id = since_id)
+  new_data_df <- new_data()
   likes <- rbind(new_data_df, likes)
   likes <- distinct(likes)
   readr::write_rds(likes, 'likes.rds')
