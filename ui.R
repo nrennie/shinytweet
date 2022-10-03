@@ -6,7 +6,7 @@ library(htmltools)
 library(lubridate)
 
 # Define UI for app that draws a histogram ----
-ui <- ui <- navbarPage(
+ui <- navbarPage(
 
   title = "{shinytweet}",
   
