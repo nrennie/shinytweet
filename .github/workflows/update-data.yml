@@ -21,8 +21,7 @@ jobs:
           
       - name: Install dependencies
         run: |
-          install.packages(c("rtweet", "dplyr", "tibble",
-          "stringr", "lubridate", "readr"))
+          install.packages(c("rtweet", "dplyr", "tibble", "stringr", "lubridate", "readr"))
         shell: Rscript {0}
         
       - name: Update data
