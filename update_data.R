@@ -32,6 +32,17 @@ new_data <- function(n = 30) {
     mutate(tweet_link = paste0("https://twitter.com/", user, "/status/", id_str), 
            user_link = paste0("https://twitter.com/", user))
   
+  # more data wrangling for table
+  likes <- likes %>% 
+  select(created_at, user, full_text, tweet_link, content_url) %>% 
+    rename(Date = created_at, 
+           User = user,
+           Tweet = full_text, 
+           URL = tweet_link,
+           Link = content_url) %>% 
+    mutate(Date = rtweet:::format_date(Date), 
+           Date = as.Date(Date))
+  
   # return data
   return(likes)
 }

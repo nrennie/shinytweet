@@ -6,19 +6,8 @@ server <- function(input, output) {
   
   output$table_output = reactable::renderReactable({
     
-    # data wrangling for table
-    table_df <- likes %>% 
-      select(created_at, user, full_text, tweet_link, content_url) %>% 
-      rename(Date = created_at, 
-             User = user,
-             Tweet = full_text, 
-             URL = tweet_link,
-             Link = content_url) %>% 
-      mutate(Date = rtweet:::format_date(Date), 
-             Date = as.Date(Date))
-    
     # create table
-    reactable::reactable(table_df,
+    reactable::reactable(likes,
                          columns = list(
                            # define date
                            Date = colDef(

@@ -31,6 +31,17 @@ start_data <- function(n = 250) {
     mutate(url = paste0("<a href='", content_url, "' target='_blank'>", "LINK", "</a>")) %>% 
     mutate(tweet_link = paste0("https://twitter.com/", user, "/status/", id_str), 
            user_link = paste0("https://twitter.com/", user))
+  
+  # more data wrangling for table
+  likes <- likes %>% 
+    select(created_at, user, full_text, tweet_link, content_url) %>% 
+    rename(Date = created_at, 
+           User = user,
+           Tweet = full_text, 
+           URL = tweet_link,
+           Link = content_url) %>% 
+    mutate(Date = rtweet:::format_date(Date), 
+           Date = as.Date(Date))
 
   # save file
   write_rds(likes, 'likes.rds')
