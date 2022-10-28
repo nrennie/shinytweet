@@ -35,6 +35,7 @@ server <- function(input, output) {
                                                  target = "_blank", as.character(Link))})
                            ),
                          # additional table options
+                         searchable = TRUE,
                          striped = TRUE,
                          defaultPageSize = 8)
   })
