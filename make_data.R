@@ -3,16 +3,15 @@ library(dplyr)
 library(stringr)
 library(tibble)
 
-# function to grab original data from witter
+# function to grab original data from twitter
 
-start_data <- function(n = 250) {
+start_data <- function(n = 3000) {
   # define parameters
   username <- "nrennie35"
   words_to_keep <- c("rstats", " r ", "rstudio", "tidyverse", 
                      "python", "shiny", "ggplot2", 
                      "tableau", "rladies", "dataviz", "vizualisation", 
                      "visualisation")
-  url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
   
   # get likes
   likes <- get_favorites(username, n = n)
@@ -20,14 +19,20 @@ start_data <- function(n = 250) {
   # get users data
   users <- users_data(likes)
   likes$user <- users$screen_name
-  likes <- as_tibble(likes) 
+  likes$protected <- users$protected
+  likes <- as_tibble(likes)
   
-  # data wrangling to tidy up urls
+  # get urls
+  entity <- likes$entities
+  urls <- lapply(seq_len(length(entity)), function(x) entity[[x]]$urls$expanded_url[1])
+  likes$content_url <- urls
+  
+  # data wrangling to filter likes
   likes <- likes %>% 
+    filter(protected == FALSE) %>%
     mutate(lower_text = tolower(full_text)) %>%
     filter(str_detect(lower_text, str_c(words_to_keep, collapse = "|"))) %>% 
-    mutate(content_url = str_extract(full_text, url_pattern)) %>%
-    filter(nchar(content_url) > 0) %>% 
+    filter(!is.na(content_url)) %>% 
     mutate(url = paste0("<a href='", content_url, "' target='_blank'>", "LINK", "</a>")) %>% 
     mutate(tweet_link = paste0("https://twitter.com/", user, "/status/", id_str), 
            user_link = paste0("https://twitter.com/", user))
@@ -42,7 +47,7 @@ start_data <- function(n = 250) {
            Link = content_url) %>% 
     mutate(Date = rtweet:::format_date(Date), 
            Date = as.Date(Date))
-
+  
   # save file
-  write_rds(likes, 'likes.rds')
+  readr::write_rds(likes, 'likes.rds')
 }
