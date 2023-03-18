@@ -10,8 +10,10 @@ new_data <- function(n = 30) {
   username <- "nrennie35"
   words_to_keep <- c("rstats", " r ", "rstudio", "tidyverse", 
                      "python", "shiny", "ggplot2", 
-                     "tableau", "rladies", "dataviz", "vizualisation", 
-                     "visualisation")
+                     "tableau", "rladies", "dataviz",
+                     "data science",
+                     "visualization", 
+                     "quarto", "visualisation")
   url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
   
   # get likes data from twitter
